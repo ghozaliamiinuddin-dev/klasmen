@@ -2,10 +2,9 @@ import streamlit as st
 import pandas as pd
 from gsheets import ws
 from datetime import datetime
-import base64
 
 st.set_page_config(page_title="Pertandingan", layout="wide")
-st.title("⚽ Input Pertandingan & Upload Screenshot")
+st.title("⚽ Input Pertandingan")
 
 players_ws = ws("players")
 matches_ws = ws("matches")
@@ -18,13 +17,6 @@ def safe_int(val):
         return int(val)
     except:
         return 0
-
-def upload_image(file):
-    # Convert uploaded file to base64 string (Google Sheets friendly)
-    if file:
-        encoded = base64.b64encode(file.read()).decode("utf-8")
-        return f"data:{file.type};base64,{encoded}"
-    return ""
 
 # =========================
 # Load Data
@@ -44,7 +36,7 @@ players = sorted(players_df["name"].tolist())
 st.subheader("➕ Tambah Pertandingan")
 
 with st.form("match_form", clear_on_submit=True):
-    col1, col2, col3 = st.columns(3)
+    col1, col2 = st.columns(2)
 
     with col1:
         p1 = st.selectbox("Pemain 1", players)
@@ -54,11 +46,8 @@ with st.form("match_form", clear_on_submit=True):
         p2 = st.selectbox("Pemain 2", players, index=1 if len(players) > 1 else 0)
         g2 = st.number_input("Gol Pemain 2", min_value=0, step=1)
 
-    with col3:
-        season = st.text_input("Season", value="2025")
-        ss_file = st.file_uploader("Upload Screenshot", type=["png","jpg","jpeg"])
-
-    submit = st.form_submit_button("✅ Simpan Pertandingan", use_container_width=True)
+    season = st.text_input("Season", value="2025")
+    submit = st.form_submit_button("✅ Simpan Pertandingan")
 
 # =========================
 # Submit Logic
@@ -76,14 +65,12 @@ if submit:
         r1 = r2 = "D"
 
     time_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    ss_data = upload_image(ss_file)
 
-    # Simpan ke matches
+    # Simpan ke matches tanpa screenshot
     matches_ws.append_row([
         p1, p2,
         f"{g1}-{g2}",
         f"{r1}-{r2}",
-        ss_data,
         season,
         time_now
     ])
@@ -126,7 +113,6 @@ if submit:
     st.success("Pertandingan berhasil disimpan")
     st.toast("Statistik pemain diperbarui", icon="✅")
 
-
 # =========================
 # Riwayat Pertandingan
 # =========================
@@ -134,17 +120,6 @@ st.divider()
 st.subheader("📜 Riwayat Pertandingan")
 
 if not matches_df.empty:
-    # Tampilkan preview screenshot
-    def render_ss(val):
-        if isinstance(val, str) and val.startswith("data:"):
-            return f'<img src="{val}" width="200">'
-        return ""
-
-    matches_df_display = matches_df.copy()
-    if "ss" in matches_df_display.columns:
-        matches_df_display["ss"] = matches_df_display["ss"].apply(render_ss)
-        st.write(matches_df_display.to_html(escape=False, index=False), unsafe_allow_html=True)
-    else:
-        st.dataframe(matches_df_display.sort_values("time", ascending=False), use_container_width=True)
+    st.dataframe(matches_df.sort_values("time", ascending=False), use_container_width=True)
 else:
     st.info("Belum ada pertandingan")

@@ -1,0 +1,64 @@
+/* ===== GLOBAL BACKGROUND ===== */
+html, body, [data-testid="stAppViewContainer"] {
+    background: linear-gradient(135deg, #054ffd, #0d2ec0);
+    color: #e5e7eb;
+}
+
+/* ===== SIDEBAR ===== */
+[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #0735ff, #0831e7);
+    border-right: 1px solid rgb(185, 18, 18);
+}
+
+/* ===== HEADINGS ===== */
+h1, h2, h3 {
+    color: #0c6dcf;
+}
+
+/* ===== CARD / CONTAINER ===== */
+[data-testid="stContainer"] {
+    background: rgb(255, 6, 6);
+    border-radius: 14px;
+    padding: 1rem;
+    border: 1px solid rgba(207, 25, 25, 0.774);
+    backdrop-filter: blur(6px);
+}
+
+/* ===== DATAFRAME ===== */
+[data-testid="stDataFrame"] {
+    background: transparent;
+}
+
+/* ===== BUTTON ===== */
+.stButton>button {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: white;
+    border-radius: 10px;
+    border: none;
+    padding: 0.5rem 1.2rem;
+    font-weight: 600;
+}
+.stButton>button:hover {
+    background: linear-gradient(135deg, #1d4ed8, #1e40af);
+}
+
+/* ===== INPUT ===== */
+input, textarea, select {
+    background-color: #020617 !important;
+    color: #e5e7eb !important;
+    border-radius: 8px !important;
+    border: 1px solid rgba(255,255,255,0.08) !important;
+}
+
+/* ===== METRIC ===== */
+[data-testid="stMetric"] {
+    background: rgba(0, 47, 255, 0.8);
+    padding: 1rem;
+    border-radius: 12px;
+    border: 1px solid rgb(255, 0, 0);
+}
+
+/* ===== IMAGE ===== */
+img {
+    border-radius: 12px;
+}

@@ -1,0 +1,7 @@
+streamlit
+pandas
+gspread
+google-auth
+pathlib
+oauth2client
+pillow
